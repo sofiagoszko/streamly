@@ -51,12 +51,6 @@ describe('MainLayout', () => {
     expect(inicio.querySelector('img')).toBeInTheDocument();
   });
 
-  it('muestra el acceso público a la cartelera', () => {
-    renderLayout();
-
-    expect(screen.getByRole('link', { name: 'Cartelera' })).toHaveAttribute('href', '/cartelera');
-  });
-
   it('sin sesión muestra solo los enlaces públicos y el acceso a la watchlist', () => {
     renderLayout();
 
@@ -65,7 +59,7 @@ describe('MainLayout', () => {
       within(explorar)
         .getAllByRole('link')
         .map((link) => link.textContent),
-    ).toEqual(['Según tu ánimo', 'Cartelera']);
+    ).toEqual(['Según tu ánimo']);
     expect(screen.queryByRole('navigation', { name: 'Principal' })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Mi watchlist' })).toHaveAttribute(
       'href',
@@ -73,7 +67,7 @@ describe('MainLayout', () => {
     );
   });
 
-  it('en celular el menú muestra Cartelera y la watchlist aunque no haya sesión', async () => {
+  it('en celular el menú muestra los enlaces públicos y la watchlist aunque no haya sesión', async () => {
     renderLayout();
 
     fireEvent.click(screen.getByRole('button', { name: 'Abrir menú' }));
@@ -83,7 +77,7 @@ describe('MainLayout', () => {
       within(menu)
         .getAllByRole('link')
         .map((link) => link.textContent),
-    ).toEqual(['Según tu ánimo', 'Cartelera', 'Mi watchlist']);
+    ).toEqual(['Según tu ánimo', 'Mi watchlist']);
   });
 
   it('con sesión suma los enlaces de la cuenta, sin el panel si no es admin', () => {

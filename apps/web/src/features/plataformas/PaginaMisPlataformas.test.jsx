@@ -351,7 +351,7 @@ describe('Link "Mis plataformas" del header', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Abrir menú' }));
     const menu = screen.getByRole('navigation', { name: 'Menú' });
-    expect(within(menu).getByRole('link', { name: 'Cartelera' })).toBeInTheDocument();
+    expect(within(menu).getByRole('link', { name: 'Según tu ánimo' })).toBeInTheDocument();
     expect(within(menu).queryByRole('link', { name: 'Mis plataformas' })).not.toBeInTheDocument();
   });
 });
