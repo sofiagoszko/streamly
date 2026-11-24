@@ -1,5 +1,4 @@
 import { useSearchParams } from 'react-router';
-import { InvitacionPlanB } from '../plan-b/InvitacionPlanB.jsx';
 import { SegmentedControl } from '../../components/ui/SegmentedControl.jsx';
 import { ListaCarteleraActual } from './ListaCarteleraActual.jsx';
 import { ListaProximosEstrenos } from './ListaProximosEstrenos.jsx';
@@ -26,7 +25,6 @@ export function PaginaCartelera() {
         }
       />
       {vista === 'estrenos' ? <ListaProximosEstrenos /> : <ListaCarteleraActual />}
-      <InvitacionPlanB />
     </div>
   );
 }

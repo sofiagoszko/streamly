@@ -4,7 +4,6 @@ export const RUTAS = Object.freeze({
   BUSQUEDA: '/',
   ANIMO: '/segun-tu-animo',
   CARTELERA: '/cartelera',
-  EVENTOS: '/cooltura',
   DETALLE_TITULO: RUTAS_ENLACE_MAIL.DETALLE_TITULO,
   WATCHLIST: '/watchlist',
   MIS_PLATAFORMAS: '/mis-plataformas',

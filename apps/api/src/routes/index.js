@@ -9,7 +9,6 @@ import { plataformaRoutes } from './plataforma.routes.js';
 import { watchlistRoutes } from './watchlist.routes.js';
 import { adminRoutes } from './admin.routes.js';
 import { carteleraRoutes } from './cartelera.routes.js';
-import { eventoRoutes } from './evento.routes.js';
 
 export const routes = Router();
 
@@ -18,7 +17,6 @@ routes.use('/busqueda/propias', busquedaPropiasRoutes);
 routes.use('/busqueda/animo', animoRoutes);
 routes.use('/busqueda', busquedaRoutes);
 routes.use('/cartelera', carteleraRoutes);
-routes.use('/eventos', eventoRoutes);
 routes.use('/titulos', tituloRoutes);
 routes.use('/auth', authRoutes);
 routes.use('/region', regionRoutes);

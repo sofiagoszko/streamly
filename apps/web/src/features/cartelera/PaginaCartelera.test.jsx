@@ -209,25 +209,6 @@ describe('PaginaCartelera', () => {
     expect(screen.getAllByText(/Datos de títulos provistos por/)).toHaveLength(1);
   });
 
-  it.each(['/cartelera', '/cartelera?vista=estrenos'])(
-    'muestra la invitación a Plan B en %s',
-    async (path) => {
-      configurarFetchCartelera((url) => {
-        const respuesta = respuestaCartelera([]);
-        if (url.pathname === '/api/cartelera/estrenos') {
-          respuesta.data.desde = url.searchParams.get('desde');
-          respuesta.data.hasta = url.searchParams.get('hasta');
-        }
-        return Promise.resolve(respuestaHttp(respuesta));
-      });
-      await act(async () => {
-        renderRoute(path);
-      });
-
-      expect(screen.getByRole('link', { name: /mejor con amigos: ir a Plan B/ })).toBeVisible();
-    },
-  );
-
   it('distingue cartelera vacía y permite reintentar un error', async () => {
     const fetchMock = configurarFetchCartelera(
       vi

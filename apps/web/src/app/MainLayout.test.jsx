@@ -56,10 +56,6 @@ describe('MainLayout', () => {
 
     expect(screen.getByRole('link', { name: 'Cartelera' })).toHaveAttribute('href', '/cartelera');
   });
-  it('muestra el acceso público a los eventos de Cooltura', () => {
-    renderLayout();
-    expect(screen.getByRole('link', { name: 'Cooltura' })).toHaveAttribute('href', '/cooltura');
-  });
 
   it('sin sesión muestra solo los enlaces públicos y el acceso a la watchlist', () => {
     renderLayout();
@@ -69,7 +65,7 @@ describe('MainLayout', () => {
       within(explorar)
         .getAllByRole('link')
         .map((link) => link.textContent),
-    ).toEqual(['Según tu ánimo', 'Cartelera', 'Cooltura']);
+    ).toEqual(['Según tu ánimo', 'Cartelera']);
     expect(screen.queryByRole('navigation', { name: 'Principal' })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Mi watchlist' })).toHaveAttribute(
       'href',
@@ -77,7 +73,7 @@ describe('MainLayout', () => {
     );
   });
 
-  it('en celular el menú muestra Cartelera, Cooltura y la watchlist aunque no haya sesión', async () => {
+  it('en celular el menú muestra Cartelera y la watchlist aunque no haya sesión', async () => {
     renderLayout();
 
     fireEvent.click(screen.getByRole('button', { name: 'Abrir menú' }));
@@ -87,7 +83,7 @@ describe('MainLayout', () => {
       within(menu)
         .getAllByRole('link')
         .map((link) => link.textContent),
-    ).toEqual(['Según tu ánimo', 'Cartelera', 'Cooltura', 'Mi watchlist']);
+    ).toEqual(['Según tu ánimo', 'Cartelera', 'Mi watchlist']);
   });
 
   it('con sesión suma los enlaces de la cuenta, sin el panel si no es admin', () => {
