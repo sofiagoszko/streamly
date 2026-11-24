@@ -47,8 +47,6 @@ Un buscador unificado que permite encontrar cualquier película o serie y saber,
 | Disponibilidad  | En qué plataformas está cada título en tu región, con enlace directo y comparación entre regiones   |
 | Watchlist       | Títulos guardados, con aviso por mail cuando uno pasa a estar disponible en tu región               |
 | Mis plataformas | Elegir las plataformas contratadas y buscar solo en ellas                                           |
-| Cine            | Cartelera argentina, próximos estrenos y funciones por ciudad (ver [docs/cine.md](docs/cine.md))    |
-| Cooltura        | Eventos presenciales en La Plata (ver [docs/cooltura.md](docs/cooltura.md))                         |
 | Cuenta          | Registro, inicio de sesión, recuperar y cambiar la contraseña, cambiar el mail y eliminar la cuenta |
 | Administración  | Métricas de uso y listado de usuarios, solo para cuentas con rol de administrador                   |
 
@@ -79,7 +77,6 @@ Copiar `apps/api/.env.example` como `apps/api/.env` y completar las claves de Su
 | `STREAMING_AVAILABILITY_API_KEY` | Deep links de la ficha y sincronización diaria de disponibilidad                    |
 | `RESEND_API_KEY`, `RESEND_FROM`  | Mails de avisos de la watchlist                                                     |
 | `SMTP_*`, `MAIL_FROM`            | Mails de la cuenta (recuperar la contraseña y cambiar el mail)                      |
-| `ALLEVENTS_API_KEY`              | Eventos de Cooltura                                                                 |
 | `TRUST_PROXY`                    | Proxies de confianza, para detectar bien la región (ver [API](#búsqueda-y-títulos)) |
 
 Los jobs programados (`syncAvailability` y `sendNotifications`) corren solo con `NODE_CRON_RUN=true`, en una sola instancia del despliegue; por defecto quedan desactivados. En local se ejecutan a mano con `npm run job -w apps/api -- <nombre>`. El detalle está en [apps/api/README.md](apps/api/README.md).
@@ -107,8 +104,6 @@ supabase/
 | Ruta                      | Sesión | Descripción                                                                                          |
 | ------------------------- | :----: | ---------------------------------------------------------------------------------------------------- |
 | `/`                       |        | Búsqueda de películas y series                                                                       |
-| `/cartelera`              |        | Películas que TMDB clasifica actualmente en cartelera argentina                                      |
-| `/cooltura`               |        | Eventos presenciales en La Plata                                                                     |
 | `/titulos/:tipo/:tmdbId`  |        | Detalle de un título con su disponibilidad en la región y, con sesión, la comparación entre regiones |
 | `/watchlist`              |   sí   | Títulos guardados por el usuario                                                                     |
 | `/mis-plataformas`        |   sí   | Elegir las plataformas contratadas                                                                   |
@@ -123,7 +118,7 @@ supabase/
 | `/restablecer-contrasena` |        | Elegir una contraseña nueva desde el enlace del mail                                                 |
 | `/confirmar-mail`         |        | Confirmar el cambio de mail desde el enlace del mail                                                 |
 
-La nav del header ofrece la cartelera y Cooltura a cualquier visitante y, con sesión, también lleva a «Mi watchlist», «Mis plataformas» y «Perfil». Sin sesión, `/watchlist` invita a iniciar sesión. Con sesión, el avatar abre un menú con «Perfil» y «Cerrar sesión».
+La nav del header ofrece la búsqueda según tu ánimo a cualquier visitante y, con sesión, también lleva a «Mi watchlist», «Mis plataformas» y «Perfil». Sin sesión, `/watchlist` invita a iniciar sesión. Con sesión, el avatar abre un menú con «Perfil» y «Cerrar sesión».
 
 En el perfil, las plataformas se editan con el mismo listado que en `/mis-plataformas`, y las acciones de cuenta llevan a cada sección de `/perfil/cuenta`. Los enlaces que llegan por mail vencen a los 30 minutos. Eliminar la cuenta borra al usuario y todos sus datos.
 
@@ -267,33 +262,6 @@ Con sesión, `GET /api/titulos/:tipo/:tmdbId/disponibilidad/comparacion?regiones
 
 La watchlist es siempre la del usuario de la sesión. Al agregar un título, la API guarda sus datos y sus géneros de TMDB; si ya estaba guardado sin géneros, los completa. Cuando un título guardado pasa a estar disponible en la región del perfil, el usuario recibe un aviso por mail (ver [apps/api/README.md](apps/api/README.md)).
 
-### Cine y eventos
-
-| Método | Ruta                                      | Sesión | Descripción                                                     |
-| ------ | ----------------------------------------- | :----: | --------------------------------------------------------------- |
-| GET    | `/cartelera`                              |        | Películas en cartelera según TMDB en Argentina. Query: `pagina` |
-| GET    | `/cartelera/estrenos`                     |        | Próximos estrenos en salas argentinas                           |
-| GET    | `/cartelera/ciudades`                     |        | Ciudades con cobertura de cines                                 |
-| GET    | `/cartelera/peliculas/:tmdbId/funciones`  |        | Funciones de una película en una ciudad                         |
-| GET    | `/cartelera/peliculas/:tmdbId/exhibicion` |        | Si la película figura en exhibición                             |
-| GET    | `/eventos`                                |        | Eventos en La Plata. Query: `categoria`, `fecha`, `pagina`      |
-
-El detalle de estrenos, ciudades y funciones está en [docs/cine.md](docs/cine.md), y el de eventos en [docs/cooltura.md](docs/cooltura.md).
-
-<details>
-<summary><strong>Cartelera</strong></summary>
-
-`GET /api/cartelera?pagina=1` devuelve el catálogo público de películas que TMDB clasifica como `now_playing` en Argentina. La consulta admite solo `pagina` (entero de 1 a 500) y usa `AR`, independientemente de la región del perfil. Esta clasificación no confirma salas ni horarios.
-
-- La cartelera se cachea una hora; las fechas regionales y el año original consultados por película se cachean 24 horas. El año se obtiene del detalle sin región para distinguir la obra de su estreno argentino o reestreno.
-- Al volver del detalle, el historial restaura las páginas cargadas de la cartelera durante una hora desde la primera consulta, sin extender ese plazo al cargar más páginas. Si el estado venció o no tiene vencimiento, se vuelve a consultar desde la primera página, también al recargar la pantalla.
-- La integración limita la concurrencia a ocho solicitudes y no reintenta errores ni respuestas `429`; el endpoint tiene un límite local de 30 solicitudes por IP por minuto. TMDB puede modificar sus límites y no garantiza una frecuencia de actualización.
-- Las fechas se informan solo cuando TMDB publica para Argentina un estreno en salas limitado o general (tipos 2/3).
-
-La aplicación mantiene la atribución requerida a TMDB y no presenta este catálogo como confirmación de funciones.
-
-</details>
-
 ### Administración
 
 | Método | Ruta              | Sesión | Descripción                                                     |
@@ -354,13 +322,11 @@ Devuelve `{ usuarios, total, pagina, totalPaginas }`, de a 10 usuarios.
 
 ## Documentación
 
-| Documento                                | Contenido                                                    |
-| ---------------------------------------- | ------------------------------------------------------------ |
-| [AGENTS.md](AGENTS.md)                   | Convenciones del proyecto: capas, nombres, idioma y commits  |
-| [docs/](docs/README.md)                  | Flujo de trabajo con git, guía de commits y ciudades de cine |
-| [docs/cine.md](docs/cine.md)             | Estrenos, ciudades, funciones y sitios de cines              |
-| [docs/cooltura.md](docs/cooltura.md)     | Eventos de La Plata: fuente, contrato y límites              |
-| [apps/api/README.md](apps/api/README.md) | Jobs programados y avisos de la watchlist                    |
-| [supabase/README.md](supabase/README.md) | Base de datos y cómo asignar el rol de administrador         |
+| Documento                                | Contenido                                                   |
+| ---------------------------------------- | ----------------------------------------------------------- |
+| [AGENTS.md](AGENTS.md)                   | Convenciones del proyecto: capas, nombres, idioma y commits |
+| [docs/](docs/README.md)                  | Flujo de trabajo con git y guía de commits                  |
+| [apps/api/README.md](apps/api/README.md) | Jobs programados y avisos de la watchlist                   |
+| [supabase/README.md](supabase/README.md) | Base de datos y cómo asignar el rol de administrador        |
 
 <p align="center"><sub>Datos de títulos provistos por TMDB y datos de disponibilidad provistos por JustWatch. Este producto usa la API de TMDB pero no está avalado ni certificado por TMDB.</sub></p>

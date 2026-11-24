@@ -7,24 +7,6 @@ import { PlataformasPropiasContext } from '../../contexts/plataformasPropias/Pla
 import { RegionProvider } from '../../contexts/region/RegionProvider.jsx';
 import { SessionContext } from '../../contexts/session/SessionContext.js';
 
-const ciudadContext = vi.hoisted(() => ({
-  ciudades: [],
-  idCiudadSeleccionada: null,
-  loading: false,
-  error: '',
-  aviso: '',
-  cargarDirectorio: vi.fn(),
-  seleccionarCiudad: vi.fn(),
-  reintentar: vi.fn(),
-}));
-vi.mock('../../contexts/ciudadCine/CiudadCineContext.js', () => ({
-  useCiudadCine: () => ciudadContext,
-}));
-vi.mock('../cartelera/cartelera.api.js', async (importOriginal) => ({
-  ...(await importOriginal()),
-  obtenerExhibicionPelicula: vi.fn(async () => ({ consultable: false })),
-}));
-
 const SIN_SESION = { user: null, loading: false };
 const CON_SESION = { user: { id: 'u1', email: 'ana@mail.com' }, loading: false };
 

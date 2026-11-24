@@ -1,5 +1,3 @@
-export * from './cartelera.constants.js';
-export * from './eventos.constants.js';
 export * from './animo.constants.js';
 
 // Valores del negocio: deben coincidir con los enums de la base (supabase/migrations).
