@@ -3,79 +3,79 @@
 /* Modo oscuro por clase: ThemeProvider agrega/quita .dark en <html>. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Tokens de la matriz visual de STREAMLY. */
+/* Tokens de la matriz visual de STREAMLY (paleta violeta, tomada del logo). */
 :root {
-  --background: #f4f6f5;
+  --background: #f6f4fa;
   --surface: #ffffff;
-  --foreground: #16211d;
-  --muted: #55635d;
-  --border: #dce2df;
-  --border-strong: #b3bdb8;
+  --foreground: #1a1426;
+  --muted: #5d5668;
+  --border: #e0dbe8;
+  --border-strong: #b5adc2;
 
-  --primary: #0b7a5b;
-  --primary-hover: #075c44;
+  --primary: #6d3fc4;
+  --primary-hover: #5f35b0;
   --primary-foreground: #ffffff;
-  --link: #075c44;
+  --link: #5a31ad;
 
   --accent: #e8543a;
   --accent-hover: #c44530;
-  --accent-foreground: #16211d;
+  --accent-foreground: #1a1426;
 
-  --chip: #e4f0eb;
-  --chip-foreground: #075c44;
+  --chip: #eee8fa;
+  --chip-foreground: #54309f;
   --danger: #b42318;
   --danger-foreground: #ffffff;
   --danger-surface: #fef3f2;
-  --success: #0b7a5b;
+  --success: #6d3fc4;
 
-  --panel: #16211d;
-  --panel-foreground: #f4f6f5;
-  --panel-muted: #a7b4ae;
-  --panel-accent: #6fd3a8;
+  --panel: #1a1426;
+  --panel-foreground: #f6f4fa;
+  --panel-muted: #b0a8bf;
+  --panel-accent: #b79af0;
 
   --rating: #e6a100;
   --switch-knob: #ffffff;
-  --skeleton: #e4e9e6;
-  --grafico-secundario: #6fd3a8;
-  --plataforma-inactiva: #8a9590;
+  --skeleton: #e9e4f0;
+  --grafico-secundario: #b79af0;
+  --plataforma-inactiva: #8b8596;
   --plataforma-inactiva-foreground: #ffffff;
 }
 
 .dark {
-  --background: #0d1712;
-  --surface: #16211d;
-  --foreground: #f4f6f5;
-  --muted: #a7b4ae;
-  --border: #2c3b34;
-  --border-strong: #42534a;
+  --background: #110c1a;
+  --surface: #1b1428;
+  --foreground: #f6f4fa;
+  --muted: #b0a8bf;
+  --border: #33293f;
+  --border-strong: #4d4160;
 
-  --primary: #0b7a5b;
-  --primary-hover: #075c44;
+  --primary: #7c4dd1;
+  --primary-hover: #6d3fc4;
   --primary-foreground: #ffffff;
-  --link: #8be0ba;
+  --link: #c9adf7;
 
   --accent: #e8543a;
   --accent-hover: #f06a53;
-  --accent-foreground: #16211d;
+  --accent-foreground: #1a1426;
 
-  --chip: #173a2c;
-  --chip-foreground: #8be0ba;
+  --chip: #2a1d44;
+  --chip-foreground: #cdb5f8;
   --danger: #ff8a7d;
-  --danger-foreground: #16211d;
+  --danger-foreground: #1a1426;
   --danger-surface: #2d1614;
-  --success: #6fd3a8;
+  --success: #b79af0;
 
-  --panel: #07100c;
-  --panel-foreground: #f4f6f5;
-  --panel-muted: #a7b4ae;
-  --panel-accent: #72d9ad;
+  --panel: #0a0710;
+  --panel-foreground: #f6f4fa;
+  --panel-muted: #b0a8bf;
+  --panel-accent: #b79af0;
 
   --rating: #f5b82e;
   --switch-knob: #ffffff;
-  --skeleton: #22302a;
-  --grafico-secundario: #4fbf8f;
-  --plataforma-inactiva: #4d5c55;
-  --plataforma-inactiva-foreground: #d5ddd9;
+  --skeleton: #271d36;
+  --grafico-secundario: #a98af0;
+  --plataforma-inactiva: #4d4160;
+  --plataforma-inactiva-foreground: #d9d2e4;
 }
 
 /*
